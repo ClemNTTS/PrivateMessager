@@ -1,0 +1,13 @@
+body {
+  background-color: peachpuff;
+  text-align: center;
+  font-size: 16px;
+}
+
+#msg_writer {
+  box-shadow: 12px;
+}
+
+#send {
+  background-color: lightgoldenrodyellow;
+}
