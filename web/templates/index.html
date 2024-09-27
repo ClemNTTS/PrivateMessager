@@ -3,12 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/web/static/home.css" />
+    <link rel="stylesheet" href="/web/static/home.css" type="text/css" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="/web/favicon/send_logo.ico"
+    />
     <title>Private Messager</title>
   </head>
   <body>
-    <div id="messages"></div>
+    <div id="box_messages"><div id="messages"></div></div>
     <input type="text" id="msg_writer" placeholder="Type your message ..." />
-    <button id="send">>></button>
+    <button id="send">
+      <img src="/web/static/send_logo.png" id="send_logo" />
+    </button>
+
+    <div id="loginModal">
+      <div id="modalContent">
+        <h2>Enter your name</h2>
+        <input type="text" id="usernameInput" placeholder="Your name ..." />
+        <button id="submitUsername">Register</button>
+      </div>
+    </div>
+
+    <script src="/web/static/script.js"></script>
   </body>
 </html>
