@@ -77,11 +77,8 @@ To configure the WebSocket endpoint in the JavaScript:
 const ws = new WebSocket("ws://[IPv4]:8080/ws");
 ```
 
-```
-
 Replace `[IPv4]` with the correct server IP address and port if necessary.
 
 ## License
 
 This project is under the `MIT License` - loock at the file [LICENSE.md](LICENSE) for more informations
-```
