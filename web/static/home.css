@@ -152,3 +152,33 @@ body {
   border-radius: 5px;
   text-align: center;
 }
+
+.message-bubble {
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+}
+
+/* Bulle de message de l'utilisateur (alignée à droite) */
+.message-bubble.sent {
+  background-color: #f6e379; /* Vert clair WhatsApp-like */
+  align-self: flex-end;
+  text-align: right;
+  left: 60px;
+  margin-left: auto;
+}
+
+/* Bulle de message des autres (alignée à gauche) */
+.message-bubble.received {
+  background-color: #f5b48c; /* Gris clair */
+  align-self: flex-start;
+  text-align: left;
+}
+
+/* Style des noms d'utilisateur */
+.username {
+  font-weight: bold;
+  margin-bottom: 5px;
+}

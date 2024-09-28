@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const input = document.getElementById("msg_writer");
   const send = document.getElementById("send");
 
+  //Change with the folowing right value
+  const ws = new WebSocket("ws://[IPv4]:8080/ws");
+
   clearCookie("username");
 
   document.getElementById("submitUsername").onclick = function () {
@@ -26,6 +29,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     console.log("Bonjour ", username);
   };
+
+  const usernameInput = document.getElementById("usernameInput");
+  const loginModal = document.getElementById("loginModal");
+
+  // Ajoutez l'écouteur d'événements pour détecter la touche "Entrée" dans l'input du nom d'utilisateur
+  usernameInput.addEventListener("keydown", function (event) {
+    // Vérifie si "Entrée" est pressé et si l'input n'est pas vide
+    if (event.key === "Enter" && usernameInput.value.trim() !== "") {
+      const username = usernameInput.value.trim();
+      // Stocke le nom d'utilisateur dans un cookie
+      document.cookie = "username=" + username + "; path=/;";
+      // Cache le modal de connexion après validation
+      loginModal.style.display = "none";
+
+      console.log("Bonjour ", username);
+    }
+  });
 
   // Envoie le message lorsque "Entrée" est pressé
   input.addEventListener("keydown", function (event) {
@@ -39,23 +59,30 @@ document.addEventListener("DOMContentLoaded", function () {
     sendMessage();
   });
 
-  //Créé un nouveau Websocket
-  const ws = new WebSocket("ws://localhost:8080/ws");
-
   ws.onopen = () => {
     console.log("WebSocket open.");
   };
 
   ws.onmessage = (event) => {
-    const message = event.data;
+    const data = JSON.parse(event.data);
     const messagesDiv = document.getElementById("messages");
+
     if (getCookieValue("username") === null) {
       document.getElementById("loginModal").style.display = "flex";
       return;
     }
-    messagesDiv.innerHTML += `<div>${getCookieValue(
-      "username"
-    )} : ${message}</div>`;
+
+    const username = getCookieValue("username");
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message-bubble");
+    if (username === data.username) {
+      messageDiv.classList.add("sent");
+    } else {
+      messageDiv.classList.add("received");
+    }
+
+    messageDiv.innerHTML = `<div class="username">${data.username}</div>${data.message}`;
+    messagesDiv.appendChild(messageDiv);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   };
 
@@ -66,10 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function sendMessage() {
     const messageBox = document.getElementById("msg_writer");
     const message = messageBox.value.trim(); // Enlever les espaces
+    const username = getCookieValue("username");
 
-    if (message) {
-      // Vérifier si le message n'est pas vide
-      ws.send(message + "\n"); // Ajouter un saut de ligne
+    if (message && username) {
+      const data = JSON.stringify({ username: username, message: message });
+      ws.send(data); // Ajouter un saut de ligne
       messageBox.value = ""; // Réinitialiser la zone de saisie
       messageBox.focus(); // Garder le focus sur la zone de saisie
     } else {
